@@ -1,29 +1,38 @@
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
+
+export type OrderResult = Pick<IOrder, 'total'> & {
+	id: string;
+};
+
 export interface IModal {
-    сloseButton: HTMLButtonElement;
-	_сontent: HTMLTemplateElement;
-	open(): void;
-	close(): void;
-	render(): HTMLElement;
-  }
-  
+	content: HTMLElement;
+}
+
 export interface IBasket {
-	_list: HTMLElement;
-	_total: HTMLElement;
-	_button: HTMLButtonElement;
+	total: number;
 	items: ICard[];
 }
 
-  export interface ICard {
-      id: string;
-      title: string;
-	  price: number;
-      description?: string;
-      image?: string;
-      category?: string;
-      preview?: string;
-      button?: HTMLButtonElement;
+export interface IBasketItem {
+	counter: number;
+	title: string;
+	price: number;
 }
-  
+
+export interface IAction {
+	onClick(event: MouseEvent): void;
+}
+
+export interface ICard {
+	id: string;
+	title: string;
+	price: number | null;
+	description?: string;
+	image?: string;
+	category?: string;
+	preview?: string;
+	button?: HTMLButtonElement;
+}
 
 export interface IPage {
 	_cardList: HTMLElement;
@@ -31,14 +40,20 @@ export interface IPage {
 	_basket_counter: HTMLElement;
 	_pageWrapper: HTMLElement;
 }
-  
-  export interface IOrder {
+
+export interface IOrder extends IContact, IPayment {
+	total: number;
+	items: string[];
+}
+
+export interface IContact {
 	email: string;
 	phone: string;
-	address: string;
+}
+
+export interface IPayment {
 	payment: string;
-	total: number;
-	items: [];
+	address: string;
 }
 
 export interface ILarekApi {
@@ -47,13 +62,15 @@ export interface ILarekApi {
 	getProductItem: (id: string) => Promise<ICard>;
 }
 
-export interface IAppData {
-	items: ICard[];
-	catalog: ICard[];
-	basket: ICard[];
-	preview: null | string;
-	order: IOrder;
-	setItems(items: ICard[]): [];
-	setPreview(item: ICard): void;
-	addToBasket(item: ICard): [];
+export interface IForm {
+	valid: boolean;
+	errors: string[];
+}
+
+export interface ISuccess {
+	totalPrice: number;
+}
+
+export interface ISuccessActions {
+	onClick: () => void;
 }
